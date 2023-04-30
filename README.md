@@ -7,7 +7,7 @@ An API framework that uses the [Serverless framework](https://github.com/serverl
 -   [Middy](https://github.com/middyjs/middy) for middleware in Lambda handlers
 -   [AJV](https://github.com/ajv-validator/ajv) for validation.
 
-Only inteneded for personal use.
+Only intended for personal use.
 
 ## Routes
 

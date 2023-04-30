@@ -7,6 +7,7 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
   previewFeatures = []
+  // rhel-openssl-1.0.x target used for execution in Lambda
   binaryTargets   = ["native", "rhel-openssl-1.0.x"]
 }
 
