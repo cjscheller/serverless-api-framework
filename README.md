@@ -9,6 +9,13 @@ An API framework that uses the [Serverless framework](https://github.com/serverl
 
 Only intended for personal use.
 
+## Initialization
+
+```bash
+yarn install
+yarn dev
+```
+
 ## Routes
 
 ## Unit Tests

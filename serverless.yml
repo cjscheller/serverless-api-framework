@@ -16,6 +16,8 @@ provider:
     disableDefaultEndpoint: true
 
 custom:
+  domain: ${param:domain, "http://localhost:3000"}
+  subdomain: ${param:subdomain, "http://localhost:3000"}
   serverless-offline:
     noPrependStageInUrl: true
   scripts:
