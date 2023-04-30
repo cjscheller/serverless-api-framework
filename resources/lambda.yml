@@ -1,0 +1,2 @@
+# Here we can list all Lambda resource files to include them in Serverless deployment
+- ${file(handlers/Base/lambda.yml)}

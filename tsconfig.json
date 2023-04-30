@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "target": "ES6",
+    "outDir": ".build",
+    "moduleResolution": "node",
+    "lib": ["ES2016"],
+    "rootDir": "./",
+    "allowSyntheticDefaultImports": true,
+    "module": "ES2015"
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "experimentalResolver": true,
+    "esm": true
+  }
+}

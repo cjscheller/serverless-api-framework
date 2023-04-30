@@ -1,0 +1,44 @@
+service: serverless-api-framework
+useDotenv: true
+
+plugins:
+  - serverless-offline
+  - serverless-plugin-typescript
+  - serverless-plugin-scripts
+  - serverless-prune-plugin
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: ${opt:stage, 'main'}
+  region: us-east-1
+  httpApi:
+    disableDefaultEndpoint: true
+
+custom:
+  serverless-offline:
+    noPrependStageInUrl: true
+  scripts:
+    hooks:
+      # Compile AJV validation schemas and run unit test suite before deployment
+      "before:deploy:deploy": yarn ajv:compile && yarn test
+  prune:
+    # Automatically prune Lambda function versions; only maintain last 2
+    automatic: true
+    number: 2
+
+functions: ${file(resources/lambda.yml)}
+
+resources:
+  - ${file(resources/domain.yml)}
+
+package:
+  patterns:
+    # Exclude unnecessary Prisma binaries, engines, etc from deployment package
+    # https://sabinadams.hashnode.dev/managing-lambda-size-with-multiple-prisma-clients
+    - "!node_modules/@prisma/engines"
+    - "!node_modules/prisma"
+    - "!node_modules/.prisma/**/libquery_engine-*"
+    - "node_modules/.prisma/**/libquery_engine-rhel-openssl-1.0.x.so.node"
+    # Exclude uncompiled validation schemas
+    - "schema.event.json"

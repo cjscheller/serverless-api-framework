@@ -1,0 +1,4 @@
+BasePath:
+  handler: handlers/Base/handler.default
+  events:
+    - httpApi: GET /

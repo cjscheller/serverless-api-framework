@@ -1,0 +1,51 @@
+# Resources related to creating a custom domain for the deployed API
+Resources:
+  HostedZone:
+    Type: AWS::Route53::HostedZone
+    Properties:
+      Name: ${self:custom.subdomain}
+
+  ApiDomainCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: ${self:custom.domain}
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: ${self:custom.domain}
+          HostedZoneId:
+            Ref: HostedZone
+
+  ApiCustomDomain:
+    Type: AWS::ApiGatewayV2::DomainName
+    Properties:
+      DomainName: ${self:custom.domain}
+      DomainNameConfigurations:
+        - CertificateArn:
+            Ref: ApiDomainCertificate
+          EndpointType: REGIONAL
+          SecurityPolicy: TLS_1_2
+
+  ApiBasePathMapping:
+    Type: AWS::ApiGatewayV2::ApiMapping
+    DependsOn:
+      - ApiCustomDomain
+    Properties:
+      Stage: $default
+      DomainName:
+        Ref: ApiCustomDomain
+      ApiId:
+        Ref: HttpApi
+
+  CustomDomainRecord:
+    Type: AWS::Route53::RecordSet
+    DependsOn:
+      - ApiCustomDomain
+    Properties:
+      Name: ${self:custom.domain}
+      Type: A
+      HostedZoneName: maaple.org. # Make this an env var?
+      AliasTarget:
+        DNSName:
+          Fn::GetAtt: ApiCustomDomain.RegionalDomainName
+        HostedZoneId:
+          Fn::GetAtt: ApiCustomDomain.RegionalHostedZoneId
