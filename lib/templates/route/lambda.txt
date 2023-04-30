@@ -1,0 +1,4 @@
+CreateTemplate:
+  handler: handlers/CreateTemplate/handler.default
+  events:
+    - httpApi: POST /templates
