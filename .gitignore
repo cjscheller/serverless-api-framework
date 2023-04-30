@@ -1,8 +1,4 @@
-# Maaple
-config.yml
-config.json
-
-# misc
+# macOS
 .DS_Store
 
 # Serverless directories
