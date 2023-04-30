@@ -10,130 +10,13 @@ generator client {
   binaryTargets   = ["native", "rhel-openssl-1.0.x"]
 }
 
-model Customer {
-    id              Int       @default(autoincrement()) @id
-    name            String    @db.VarChar(255)
-    // logoUrl         String
-    // contact         CustomerContact
-    createdAt       DateTime  @default(now())
-    updatedAt       DateTime  @updatedAt
-
-    orders          Order[]
-    users           User[]
-    invoices        Invoice[]
-}
-
-model Product {
-    id              Int       @default(autoincrement()) @id
-    name            String    @db.VarChar(255)
-    description     String?   @db.Text
-    price           Float   
-    active          Boolean   @default(true)   
-    createdAt       DateTime  @default(now())
-    updatedAt       DateTime  @updatedAt
-
-    orderItems      OrderItem[]
-    invoiceItems    InvoiceItem[]
-}
-
-model OrderItem {
-    id              Int       @default(autoincrement()) @id
-    productId       Int
-    orderId         Int
-    quantity        Int       @default(1)
-    createdAt       DateTime  @default(now())
-    updatedAt       DateTime  @updatedAt
-
-    order           Order     @relation(fields: [orderId], references: [id])
-    product         Product   @relation(fields: [productId], references: [id])
-    @@index(orderId)
-    @@index(productId)
-}
-
-model Order {
-    id              Int           @default(autoincrement()) @id
-    customerId      Int
-    invoiceId       String
-    createdAt       DateTime      @default(now())
-    updatedAt       DateTime      @updatedAt
-    
-    items           OrderItem[]
-    customer        Customer      @relation(fields: [customerId], references: [id])
-    invoice         Invoice       @relation(fields: [invoiceId], references: [id])
-    @@index(customerId)
-    @@index(invoiceId)
-}
-
 model User {
     id              Int       @default(autoincrement()) @id
-    customerId      Int       
     firstName       String    @db.VarChar(255)
     lastName        String    @db.VarChar(255)
     email           String    @db.VarChar(255) @unique
     password        String    @db.VarChar(255)
     apiKey          String    @db.VarChar(65)
-    role            UserRole  @default(CLIENT)
-    // sandbox         Boolean
     createdAt       DateTime  @default(now())
     updatedAt       DateTime  @updatedAt
-
-    customer        Customer  @relation(fields: [customerId], references: [id]) 
-    @@index(customerId)
-}
-
-model Invoice {
-    id              String        @default(uuid()) @id
-    customerId      Int 
-    monthYear       String        @db.VarChar(7)
-    periodStart     DateTime
-    periodEnd       DateTime
-    status          InvoiceStatus @default(OPEN)
-    total           Float         @default(0)
-    createdAt       DateTime      @default(now())
-    updatedAt       DateTime      @updatedAt
-
-    items           InvoiceItem[]
-    orders          Order[]
-    payment         Payment?
-    customer        Customer      @relation(fields: [customerId], references: [id]) 
-    @@index(customerId)
-    @@unique([customerId, monthYear])
-}
-
-model InvoiceItem {
-    id              Int       @default(autoincrement()) @id
-    invoiceId       String
-    productId       Int
-    quantity        Int
-    // // Do I want to include these? If I do, I probably also want to copy over product name ... ?
-    // rate            Float
-    // total           Float     @default(0)
-
-    invoice         Invoice      @relation(fields: [invoiceId], references: [id]) 
-    product         Product      @relation(fields: [productId], references: [id]) 
-    @@index(invoiceId)
-    @@index(productId)
-    @@unique([invoiceId, productId])
-}
-
-model Payment {
-    id                          Int        @default(autoincrement()) @id
-    invoiceId                   String     @unique
-    stripeCheckoutSessionId     String     @db.VarChar(255)
-    amount                      Float         
-    createdAt                   DateTime   @default(now())
-    updatedAt                   DateTime   @updatedAt
-
-    invoice         Invoice      @relation(fields: [invoiceId], references: [id]) 
-    @@index(invoiceId)
-}
-
-enum UserRole {
-    CLIENT
-    ADMIN
-}
-
-enum InvoiceStatus {
-    OPEN
-    PAID
 }
