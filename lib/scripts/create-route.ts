@@ -93,7 +93,7 @@ async function createHandlerFile(routeFolder: string, validation: boolean) {
     const output = await generateTemplateFile(template, { validation });
 
     // Create new file
-    await writeFile(`${routeFolder}/handler.js`, output);
+    await writeFile(`${routeFolder}/handler.ts`, output);
     console.log(`Created new file: handler.ts`);
 }
 
