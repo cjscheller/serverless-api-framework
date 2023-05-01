@@ -1,4 +1,4 @@
 {{name}}:
   handler: handlers/{{name}}/handler.default
   events:
-    - httpApi: {{method}} {{path}}
+    - httpApi: {{method}} {{{path}}}
