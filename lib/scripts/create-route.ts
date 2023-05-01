@@ -94,7 +94,7 @@ async function createHandlerFile(routeFolder: string, validation: boolean) {
 
     // Create new file
     await writeFile(`${routeFolder}/handler.js`, output);
-    console.log(`Created new file: handler.js`);
+    console.log(`Created new file: handler.ts`);
 }
 
 /**
