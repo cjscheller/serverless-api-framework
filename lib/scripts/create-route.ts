@@ -110,7 +110,7 @@ async function createLambdaFile(routeFolder: string, options: CreateRouteOptions
 
     // Generate templated handler file
     const template = `${process.cwd()}/lib/templates/route/lambda.txt`;
-    const output = await generateTemplateFile(template, { ...options, name: lambdaName });
+    const output = await generateTemplateFile(template, { ...options, lambdaName });
 
     // Create new file
     await writeFile(`${routeFolder}/lambda.yml`, output);
