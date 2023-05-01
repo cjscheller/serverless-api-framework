@@ -1,4 +1,4 @@
-CreateTemplate:
-  handler: handlers/CreateTemplate/handler.default
+{{name}}:
+  handler: handlers/{{name}}/handler.default
   events:
-    - httpApi: POST /templates
+    - httpApi: {{method}} {{path}}
