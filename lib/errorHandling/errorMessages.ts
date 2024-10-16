@@ -78,6 +78,17 @@ export function additionalPropertiesErrMsg(additionalProperties: Array<string>) 
 }
 
 /**
+ * Build validation error message for invalid enum option provided
+ *
+ * @param   {string}   param         name of parameter w/ enum type
+ * @param   {string[]} allowedValues allowed values for enum
+ * @returns {string}   error message
+ */
+export function invalidEnumErrMsg(param: string, allowedValues: string[]) {
+    return `\`${param}\` must be one of the allowed values [${allowedValues.join(",")}]`;
+}
+
+/**
  * Build error message for validation error where parameter does not satisfy format requirement
  *
  * @param   {string} param  name of parameter w/ invalid format

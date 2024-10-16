@@ -69,8 +69,8 @@ function buildValidationMessage(cause) {
             return ErrorMessage.invalidFormat(param, error.params.format);
         case "minimum":
             return `\`${param}\` ${error.message}`;
-        case "errorMessage":
-            return error.message;
+        case "enum":
+            return ErrorMessage.invalidEnumErrMsg(param, error.params.allowedValues);
         case "additionalProperties":
             // Iterate thru all causes and find all "additionalProperties" errors
             const additionalProperties = cause.reduce((arr, error) => {
@@ -79,7 +79,22 @@ function buildValidationMessage(cause) {
                 return arr;
             }, []);
             return ErrorMessage.additionalPropertiesErrMsg(additionalProperties);
+        case "errorMessage":
+            return error.message;
         default:
             return error.message;
     }
+}
+
+/**
+ * Returns custom ValidationError
+ *
+ * @param   {string}          message
+ * @param   {string}          parameter
+ * @returns {ValidationError}
+ */
+export function generateValidationError(message: string, parameter: string): ValidationError {
+    return new ValidationError([
+        { message, instancePath: `/${parameter}`, keyword: "errorMessage" },
+    ]);
 }
